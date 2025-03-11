@@ -1,0 +1,39 @@
+/* Upload.css */
+.upload-box {
+    border: 2px dashed #4a5568;
+    padding: 20px;
+    width: 300px;
+    text-align: center;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  
+  .upload-box:hover {
+    background-color: #1a4b7b;
+  }
+  
+  .file-list {
+    margin-top: 10px;
+  }
+  
+  .response-box {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #0e78ea;
+    background-color: #ef5454;
+  }
+  
+  .upload-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .upload-button:hover {
+    background-color: #0056b3;
+  }
+  
