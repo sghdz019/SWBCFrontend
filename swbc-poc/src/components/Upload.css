@@ -1,15 +1,28 @@
 /* Upload.css */
+.upload-container{
+  display: flex; 
+    flex-direction: column; /* Ensures elements are stacked if needed */
+    justify-content: center;  /* Centers vertically */
+    align-items: center;  /* Centers horizontally */
+    height: 100vh; /* Optional: Ensures full-page height */
+}
+
 .upload-box {
     border: 2px dashed #4a5568;
     padding: 20px;
     width: 300px;
     text-align: center;
-    cursor: pointer;
     margin-top: 20px;
   }
   
-  .upload-box:hover {
-    background-color: #1a4b7b;
+
+  .upload-image{
+    display: flex;
+    margin-top: 20px;
+    height: 40px;
+    width: 40px;
+    padding-left: 125px;
+    padding-right: 125px;
   }
   
   .file-list {

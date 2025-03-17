@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import './Upload.css';
+import cloudImg from '../cloud.png';
 
 function Upload() {
   const [files, setFiles] = useState([]);
   const [response, setResponse] = useState(null);
 
-  const { getRootProps, getInputProps } = useDropzone({
+  const { getRootProps, getInputProps, open } = useDropzone({
+    noClick: true,
     onDrop: (acceptedFiles) => {
       setFiles(acceptedFiles);
       setTimeout(() => {
@@ -25,13 +27,27 @@ function Upload() {
   };
 
   return (
-    <div className="flex flex-col items-center p-10">
+    <div className="upload-container">
       <div
         {...getRootProps()}
         className="upload-box"
       >
         <input {...getInputProps()} />
-        <p>Drag & drop files here, or click to browse</p>
+        <div className="upload-image">
+                <img
+                src={cloudImg}
+                alt="Rotating Cog"
+                className="rotating-gear rotate"
+                />
+        </div>
+        <h4>Drag & drop files here, or click to browse</h4>
+        <p>Files Supported: PDF, TEXT, DOC , DOCX, PNG, JPG</p>
+        <button
+          className="upload-button"
+          onClick={open}
+        >
+          Browse
+        </button>
       </div>
       <div className="mt-4">
         {files.length > 0 && files.map((file) => (
