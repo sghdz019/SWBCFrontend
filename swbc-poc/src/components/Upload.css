@@ -1,6 +1,6 @@
 /* Upload.css */
 .upload-container{
-  display: flex; 
+    display: flex; 
     flex-direction: column; /* Ensures elements are stacked if needed */
     justify-content: center;  /* Centers vertically */
     align-items: center;  /* Centers horizontally */
@@ -35,6 +35,32 @@
     border: 1px solid #0e78ea;
     background-color: #ef5454;
   }
+
+  .response-container {
+    max-width: 500px;
+    text-align: center;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.document-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.metadata {
+  color: gray;
+  margin-bottom: 10px;
+}
+
+.extracted-text {
+  background-color: #f8f8f8;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: left;
+}
   
   .upload-button {
     margin-top: 20px;
@@ -44,6 +70,7 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    border-radius: 5px;
   }
   
   .upload-button:hover {
