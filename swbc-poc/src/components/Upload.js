@@ -19,7 +19,7 @@ function Upload() {
       formData.append("file", acceptedFiles[0]); 
 
       try {
-        const res = await axios.post("http://localhost:5000/api/documents/process", formData, {
+        const res = await axios.post("http://localhost:5000/api/Document/process", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
