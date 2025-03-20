@@ -2,23 +2,35 @@ import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import './Upload.css';
 import cloudImg from '../cloud.png';
+import axios from "axios"
 
 function Upload() {
   const [files, setFiles] = useState([]);
   const [response, setResponse] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const { getRootProps, getInputProps, open } = useDropzone({
     noClick: true,
-    onDrop: (acceptedFiles) => {
+    onDrop: async(acceptedFiles) => {
       setFiles(acceptedFiles);
-      setTimeout(() => {
-        setResponse({
-          Title: "Extracted Document Title",
-          RawText: "This is the extracted text from the uploaded document...",
-          TimeStamp: new Date().toISOString(),
-          metadata: { size: acceptedFiles[0].size, type: acceptedFiles[0].type },
+      setLoading(true);
+
+      const formData = new FormData();
+      formData.append("file", acceptedFiles[0]); 
+
+      try {
+        const res = await axios.post("http://localhost:5000/api/documents/process", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         });
-      }, 2000);
+
+        setResponse(res.data);
+      } catch (error) {
+        console.error("Error uploading file:", error);
+      } finally {
+        setLoading(false);
+      }
     },
   });
 
@@ -44,18 +56,19 @@ function Upload() {
         </div>
       )}
 
+      {/* Show loading state */}
+      {loading && <p>Processing document...</p>}
+
       {/* Show the response once file is processed */}
       {response && (
         <div className="response-container">
           <h2 className="document-title">{response.Title}</h2>
           <p className="metadata">
-            <strong>Size:</strong> {response.metadata.size} bytes | <strong>Type:</strong>{" "}
-          {response.metadata.type}
+            <strong>Timestamp:</strong> {new Date(response.TimeStamp).toLocaleString()}
           </p>
-          <p><strong>Timestamp:</strong> {new Date(response.TimeStamp).toLocaleString()}</p>
           <div className="extracted-text">
             <h3>Extracted Text:</h3>
-            <p>{response.text}</p>
+            <p>{response.RawText}</p>
           </div>
           <button onClick={handleReload} className="upload-button">
             Upload Another Document
