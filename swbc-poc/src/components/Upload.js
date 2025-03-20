@@ -16,16 +16,26 @@ function Upload() {
       setLoading(true);
 
       const formData = new FormData();
-      formData.append("file", acceptedFiles[0]); 
+      formData.append("Title", "Gamer")
+      formData.append("File", acceptedFiles[0]); 
 
       try {
-        const res = await axios.post("http://localhost:5000/api/Document/process", formData, {
+        const res = await axios.post("https://localhost:7103/api/Document/process", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
+            "Access-Control-Allow-Origin": "*"
           },
         });
 
-        setResponse(res.data);
+        setResponse({
+          Title: res.data.title || "No Title", // Ensure title exists
+          RawText: res.data.rawText || "No extracted text available", // Fix RawText mapping
+          TimeStamp: res.data.timeStamp || "1/1/1967 12:00:00 AM",
+          metadata: {
+            size: acceptedFiles[0].size,
+            type: acceptedFiles[0].type,
+          },
+        });
       } catch (error) {
         console.error("Error uploading file:", error);
       } finally {
@@ -64,7 +74,7 @@ function Upload() {
         <div className="response-container">
           <h2 className="document-title">{response.Title}</h2>
           <p className="metadata">
-            <strong>Timestamp:</strong> {new Date(response.TimeStamp).toLocaleString()}
+            <strong>Timestamp:</strong> {response.TimeStamp}
           </p>
           <div className="extracted-text">
             <h3>Extracted Text:</h3>
