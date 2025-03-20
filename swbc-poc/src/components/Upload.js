@@ -13,8 +13,9 @@ function Upload() {
       setFiles(acceptedFiles);
       setTimeout(() => {
         setResponse({
-          title: "Extracted Document Title",
-          text: "This is the extracted text from the uploaded document...",
+          Title: "Extracted Document Title",
+          RawText: "This is the extracted text from the uploaded document...",
+          TimeStamp: new Date().toISOString(),
           metadata: { size: acceptedFiles[0].size, type: acceptedFiles[0].type },
         });
       }, 2000);
@@ -46,11 +47,12 @@ function Upload() {
       {/* Show the response once file is processed */}
       {response && (
         <div className="response-container">
-          <h2 className="document-title">{response.title}</h2>
+          <h2 className="document-title">{response.Title}</h2>
           <p className="metadata">
             <strong>Size:</strong> {response.metadata.size} bytes | <strong>Type:</strong>{" "}
-            {response.metadata.type}
+          {response.metadata.type}
           </p>
+          <p><strong>Timestamp:</strong> {new Date(response.TimeStamp).toLocaleString()}</p>
           <div className="extracted-text">
             <h3>Extracted Text:</h3>
             <p>{response.text}</p>
