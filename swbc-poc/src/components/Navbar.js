@@ -1,42 +1,3 @@
-// import React, {useState} from 'react'
-// import { Link } from 'react-router-dom';
-
-// function Navbar() {
-//     const [click, setClick] = useState(false)
-//     const handleClick = () => setClick(!click)
-//     const closeMobileMenu = () => setClick(false)
-//   return (
-//     <>
-//         <nav className="navbar">
-//             <div className="navbar-container">
-//                 <Link to="/" className="navbar-logo">
-//                     SWBC
-//                 </Link>
-//                 <div className='menuicon'onClick={handleClick}>
-//                     <i className={click ? 'fas fa-times' : 'fas fa-bars'}/>
-//                 </div>
-//                 <ul className={click ? 'nav-menu-active' : 'nav-menu'}>
-//                     <li className='nav-item'>
-//                         <Link to='/' className='nav-links' onClick={closeMobileMenu}>
-//                             Home
-//                         </Link>
-//                     </li>
-//                 </ul>
-//                 <ul className={click ? 'nav-menu-active' : 'nav-menu'}>
-//                     <li className='nav-item'>
-//                         <Link to='/uploads' className='nav-links' onClick={closeMobileMenu}>
-//                             Uploads
-//                         </Link>
-//                     </li>
-//                 </ul>
-//             </div>
-//         </nav>
-//     </>
-//   )
-// }
-
-// export default Navbar
-
 import { Link } from 'react-router-dom';
 import logo from '../logo.png';
 import './Navbar.css';
@@ -68,7 +29,9 @@ function Navbar() {
   return (
     <nav className="nav-container">
       <div className="group-1">
+        <Link to="/" className="hover:underline">
           <img src={logo} alt="SWBC Logo" className="h-10" />
+        </Link>
           <div className='nav-bar'>
             <button className="menu-button w-nav-button" onClick={() => setIsOpen(!isOpen)} aria-label="menu" aria-haspopup="menu" aria-expanded={isOpen}>
               <span className="hamburger-icon">&#9776;</span>
@@ -77,30 +40,16 @@ function Navbar() {
               <Link to="/" className="hover:underline">Dashboard</Link>
               <Link to="/upload" className="hover:underline">Upload</Link>
             </div>
-            <button class="button-18" role="button">Search Repository</button>
+            <Link to="/" className="hover:underline">
+              <img src={search} alt="Search Button" className="h-11"/>
+            </Link>
+            <button class="button-18" role="button">Log In</button> 
           </div>
       </div>
-      {/* <img src={logo} alt="SWBC Logo" className="h-10" />
-      <div className="space-x-4">
-        <Link to="/" className="hover:underline">Home</Link>
-        <Link to="/upload" className="hover:underline">Upload</Link>
-      </div> */}
     </nav>
   );
 }
 
 export default Navbar;
 
-// return (
-//   <nav className="bg-gray-800 text-white p-4 flex justify-between items-center">
-//     <img src={logo} alt="SWBC Logo" className="h-10" />
-//     <div className="space-x-4">
-//       <Link to="/" className="hover:underline">Home</Link>
-//       <Link to="/upload" className="hover:underline">Upload</Link>
-//     </div>
-//   </nav>
-// );
-// }
-
-//name space SWBCDocument API.model;
 

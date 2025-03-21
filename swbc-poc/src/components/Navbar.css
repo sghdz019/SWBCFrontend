@@ -31,26 +31,19 @@ nav {
 .nav-container {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: center;  /* Ensure items are vertically centered */
   background-color: #FFFFFF;
   color: white;
   padding: 1rem;
   border: 1px solid #AEAEAE;
-  height: 40;
-  font-family: -apple-system, system-ui, system-ui, "Segoe UI", Roboto, "Helvetica Neue", "Fira Sans", Ubuntu, Oxygen, "Oxygen Sans", Cantarell, "Droid Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Lucida Grande", Helvetica, Arial, sans-serif;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 28px;
+  height: 55px; /* Adjusted height to match other elements */
 }
 
 .group-1 {
-  width:100%;
-  height: 55px;
-  margin-left: 30px;
-  margin-right: 30px;
-  justify-content: space-between;
   display: flex;
   justify-content: space-between;
+  width: 100%;
+  align-items: center; /* Align items within the group */
 }
 
 .logo-container {
@@ -63,22 +56,28 @@ nav {
   height: 55px;
 }
 
-/* .nav-bar {
-  height: 55px;
-  text-align:right;
-  justify-content: space-between;
+.nav-bar {
+  display: flex;
+  align-items: center;
 
-} */
-
-nav a {
-  color: black;
-  text-decoration: none;
-  font-size: 16px;
 }
+
+.nav-links {
+  display: flex;
+  align-items: center; /* Align search icon and links vertically */
+  margin-right: 5px; /* Add margin to right of nav-links */
+}
+
+.nav-links a {
+  margin: 0 10px; /* Add spacing between links */
+}
+
 
 .h-11 {
   object-fit: contain;
   width:18px;
+  height: auto;
+  margin-right: 10px;
 }
 
 
@@ -150,7 +149,8 @@ nav a {
       flex-direction: column;
       position: absolute;
       top: 80px;
-      right: 0;
+      right: 0px;
+      left: 4px;
       width: 100%;
       text-align: left;
       background-color: var(--vl);

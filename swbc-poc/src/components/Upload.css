@@ -4,7 +4,7 @@
     flex-direction: column; /* Ensures elements are stacked if needed */
     justify-content: center;  /* Centers vertically */
     align-items: center;  /* Centers horizontally */
-    height: 100vh; /* Optional: Ensures full-page height */
+    margin-top: 150px;
 }
 
 .upload-box {
@@ -14,7 +14,6 @@
     text-align: center;
     margin-top: 20px;
   }
-  
 
   .upload-image{
     display: flex;
