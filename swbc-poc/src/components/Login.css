@@ -1,0 +1,147 @@
+
+
+/* Login Container */
+.login-container {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 450px;
+    width: 100%;
+}
+
+/* Page Title */
+.page-title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #0c2340;
+    margin-bottom: 20px;
+}
+
+/* Input Fields */
+.input-group {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+.input-group-prepend {
+    background: #eee;
+    padding: 10px;
+}
+
+.input-group-text {
+    font-size: 18px;
+    color: #666;
+}
+
+.form-control {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    font-size: 16px;
+    outline: none;
+}
+
+/* Remember Me Checkbox */
+.checkbox label {
+    font-size: 14px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Login Button */
+.btn-primary {
+    background: #0c2340;
+    color: white;
+    border: none;
+    padding: 10px;
+    font-size: 18px;
+    cursor: pointer;
+    width: 100%;
+    border-radius: 5px;
+    transition: 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: #001f3f;
+}
+
+/* Help Section */
+.help-section ul {
+    list-style: none;
+    padding: 0;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.help-section li {
+    display: inline;
+    margin-right: 10px;
+}
+
+.help-section a {
+    text-decoration: none;
+    color: #007bff;
+    font-size: 14px;
+}
+
+.help-section a:hover {
+    text-decoration: underline;
+}
+
+/* Bottom Grey Box */
+.grey {
+    background: #f8f8f8;
+    padding: 10px;
+    text-align: center;
+    font-size: 12px;
+    color: #555;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 500px) {
+    .login-container {
+        width: 90%;
+        padding: 1.5rem;
+    }
+
+    .page-title {
+        font-size: 20px;
+    }
+
+    .btn-primary {
+        font-size: 16px;
+        padding: 8px;
+    }
+}
+
+/* Centering the Login Container */
+.login-container {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 450px;
+    width: 100%;
+    
+    /* Centering */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    /* Positioning */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

@@ -9,6 +9,23 @@
   text-align: center;
 }
 
+.background-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;  /* Ensures video covers the background */
+  z-index: -1;       /* Places the video behind other elements */
+}
+
+.content-overlay {
+  position: relative;  /* Allows content to be placed over the video */
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
 .welcome-message h1 {
   font-size: 2.5rem;
   color: #28487b;

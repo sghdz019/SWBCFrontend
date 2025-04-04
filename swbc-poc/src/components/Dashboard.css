@@ -1,0 +1,239 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  display: flex;
+  width: 100%;
+  min-height: 100vh; 
+  /* background-color: white; */
+}
+
+/* Sidebar styling */
+.sidebar {
+  width: 250px;
+  background-color: white;
+  color: black;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  /* height: 100vh; */
+}
+
+.create-btn {
+  background-color: #666;
+  border: none;
+  padding: 10px;
+  color: white;
+  cursor: pointer;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  width: 88%;
+}
+
+.create-btn:hover {
+  background-color: #ff8000;
+}
+
+.menu {
+  list-style-type: none;
+}
+
+.menu li {
+  padding: 10px 0;
+}
+
+.menu ul {
+  list-style-type: none;
+  margin-left: 20px;
+  padding-top: 10px;
+}
+
+.menu li ul li {
+  padding: 5px 0;
+}
+
+/* Main content styling */
+.main-content {
+  flex-grow: 1;
+  background-color: white;
+  padding-right: 20px; 
+  height: 100vh; 
+  /* overflow-y: auto; */
+  padding-bottom: 100px;
+}
+
+.toolbar {
+  display: flex;  /* Force toolbar to be block level */
+  position: sticky;
+  z-index: 100; /* Ensures it stays above the file list */
+  background-color: #fff;
+  padding-top: 15px; 
+  padding-bottom: 5px;
+  border-bottom: 1px solid #ddd;
+  flex-direction: column;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.filter-btn {
+  background-color: #f0f0f0;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.search-box {
+  margin-left: 15px;
+  margin-right: 15px;
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.search-box:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.search-icon {
+  padding: 5px;
+  font-size: 1.2em;
+}
+
+.sort-label {
+  margin-left: 10px;
+}
+
+.select-container {
+  display: flex;
+  align-items: center;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.check-text{
+  padding-left: 6px;
+}
+
+
+.toolbar-btn-container {
+  display: flex;
+  padding: 5px;
+}
+
+.toolbar-btn {
+  margin-left: 10px;
+  background-color: #f0f0f0;
+  color: black;
+  border: 1px solid #ccc;
+  padding: 4px;
+  cursor: pointer;
+}
+
+.toolbar-btn:hover {
+  background-color: #0056b3;
+}
+
+.file-list-1 {
+  overflow-y: auto;
+  /*height: calc(100vh - 150px);*/
+} 
+
+.file-item {
+  display: flex;
+  align-items: center; /* Vertically aligns elements */
+  padding: 10px;
+  border-bottom: 1px solid #ccc; /* Optional: Adds a bottom border between items */
+}
+
+.file-item-link {
+  display: flex;
+  flex: 1; /* Allows content inside to take up remaining space */
+  justify-content: space-between; /* Middle-details and right-details stay apart */
+  text-decoration: none;
+  color: inherit;
+  align-items: center;
+}
+
+.file-item:hover{
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+.file-item.selected{
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+.item-checkbox {
+  margin-right: 10px; /* Adds space between checkbox and middle-details */
+}
+
+.middle-details {
+  flex: 1; /* Takes up available space between checkbox and right details */
+}
+
+.file-info {
+  font-weight: bold;
+  flex-grow: 1;
+  padding: 5px;
+}
+
+.file-details {
+  color: gray;
+  font-size: 0.9em;
+  text-align: right;
+}
+
+.right-details {
+  text-align: right; /* Ensures right alignment */
+  min-width: 150px; /* Prevents wrapping if needed */
+}
+
+.file-details-line {
+  color: gray;
+  font-size: 0.8em;  /* Slightly smaller for extra line */
+  margin-left: 7px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.page-button {
+  margin: 0 5px;
+  padding: 8px 16px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.page-button:hover {
+  background-color: #f1f1f1;
+}
+
+.page-button.active {
+  background-color: #007bff;
+  color: white;
+}
+
+.page-button:disabled {
+  background-color: #e9ecef;
+  cursor: not-allowed;
+}

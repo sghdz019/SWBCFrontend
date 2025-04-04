@@ -1,0 +1,115 @@
+/* FileView.css */
+.view-file__container {
+  width: 80%;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #f4f4f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.view-file__header {
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+}
+
+.view-file__header h2 {
+  font-size: 1.5rem;
+  color: #333;
+  margin: 0;
+}
+
+.view-file__info {
+  margin-top: 1rem;
+  font-size: 1rem;
+  color: #555;
+}
+
+.view-file__info div {
+  margin-bottom: 0.5rem;
+}
+
+.view-file__info strong {
+  color: #333;
+}
+
+.view-file__content {
+  margin-top: 2rem;
+}
+
+.view-file__content h3 {
+  font-size: 1.25rem;
+  color: #333;
+}
+
+.view-file__preview,
+.view-file__image-preview {
+  margin-top: 1rem;
+}
+
+.view-file__extracted-text-viewer {
+  background-color: #eaeaea;
+  padding: 1rem;
+  border-radius: 8px;
+  font-family: 'Courier New', Courier, monospace;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.view-file__image-preview img {
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.view-file__actions {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.view-file__actions button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border: none;
+  background-color: #095ee7;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.view-file__actions button:hover {
+  background-color: #45a049;
+}
+
+.view-file__download-btn {
+  background-color: #007bff;
+}
+
+.view-file__download-btn:hover {
+  background-color: #0069d9;
+}
+
+.view-file__share-btn {
+  background-color: #ff9800;
+}
+
+.view-file__share-btn:hover {
+  background-color: #fb8c00;
+}
+
+.view-file__edit-btn {
+  background-color: #f44336;
+}
+
+.view-file__edit-btn:hover {
+  background-color: #e53935;
+}
