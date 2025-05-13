@@ -40,9 +40,6 @@ function Navbar() {
               <Link to="/dashboard" className="hover:underline">Dashboard</Link>
               <Link to="/upload" className="hover:underline">Upload</Link>
             </div>
-            <Link to="/" className="hover:underline">
-              <img src={search} alt="Search Button" className="h-11"/>
-            </Link>
             <Link to="/login" className="hover:underline">
               <button class="button-18" role="button">Log In</button> 
             </Link>

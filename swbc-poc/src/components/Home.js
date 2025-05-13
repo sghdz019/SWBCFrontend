@@ -10,8 +10,8 @@ function Home() {
           <p>Take a look around and start managing your documents today.</p>
         </div>
         <div className="button-container">
-          <Link to="./Upload">
-            <button className="button-18" role="button">Upload a Document</button>
+          <Link to="./Login">
+            <button className="button-18" role="button">Login to Continue</button>
           </Link>
         </div>
       </div>
