@@ -107,7 +107,7 @@ function Upload() {
       const jobId = res.data;
   
       // Call the second endpoint with jobId
-      const format = "text"; // or "html"?
+      const format = "HTML"; // or RAW, PRETTY
       const processedRes = await axios.get(
         `https://localhost:7103/api/Document/getProcessedDocument`,
         {
