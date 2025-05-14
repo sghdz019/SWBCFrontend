@@ -130,10 +130,14 @@ function Upload() {
         },
       });
     } catch (error) {
-      console.error("Error processing document:", error);
-      alert("There was an error processing the document.");
-    } finally {
-      setLoading(false);
+      if (axios.isAxiosError(error)) {
+        console.error("API error response status:", error.response?.status);
+        console.error("API error response data:", error.response?.data);
+        alert(`API Error: ${error.response?.data?.message || "An error occurred while processing the document."}`);
+      } else {
+        console.error("Unexpected error:", error);
+        alert("An unexpected error occurred.");
+      }
     }
   };
 
