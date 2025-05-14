@@ -78,52 +78,41 @@ function Upload() {
     setLoading(true);
     setSubmitted(true);
 
-    const doc = {
-      // Build UnprocessedDocument 
-      title: formData.docTitle,
-      fileName: files[0].name,
-      companyId: formData.companyId,
-      employeeId: formData.employeeId,
-      signerName: formData.signerName,
-      signerTitle: formData.signerTitle,
-      purpose: formData.purpose,
-      signDate: formData.signDate,
-      expirationDate: formData.expirationDate,
-    };
-  
+    const uploadData = new FormData();
+    uploadData.append("File", files[0]);
+
     try {
-      const method = "DETECT"; // or "ANALYZE"?
-  
+      // Initial request to process the document
       const res = await axios.post(
-        `https://localhost:7103/api/Document/process?method=${method}`,
-        doc,
+        "https://localhost:7103/api/Document/process",
+        uploadData,
         {
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "multipart/form-data",
           },
         }
       );
-  
-      const jobId = res.data;
-  
-      // Call the second endpoint with jobId
-      const format = "HTML"; // or RAW, PRETTY
+
+      const jobId = res.data.jobId; // is this the backend repsonse??
+
+      // Fetch the processed result
       const processedRes = await axios.get(
-        `https://localhost:7103/api/Document/getProcessedDocument`,
+        "https://localhost:7103/api/Document/getProcessedDocument",
         {
           params: {
             jobId: jobId,
-            method: method,
-            format: format,
+            method: "DETECT",
+            format: "HTML", // or RAW, PRETTY 
           },
         }
       );
-  
-      //Purpose: Response back from API
+
+      const extracted = processedRes.data;
+
       setResponse({
-        Title: doc.title || "No Title",
-        RawText: res.data.rawText || "No extracted text available",
-        TimeStamp: new Date().toLocaleString() || "1/1/1967 12:00:00 AM",
+        Title: extracted.title || "No Title",
+        RawText: extracted.rawText || "No extracted text available",
+        TimeStamp: extracted.timeStamp || new Date().toLocaleString(),
         metadata: {
           size: files[0].size,
           type: files[0].type,
@@ -131,10 +120,12 @@ function Upload() {
       });
     } catch (error) {
       console.error("Error processing document:", error);
+      alert("There was an error processing the document.");
     } finally {
       setLoading(false);
     }
   };
+
 //This is what was there before (worked with raw text)
   //   const uploadData = new FormData();
   //   uploadData.append("Title", "Gamer");
