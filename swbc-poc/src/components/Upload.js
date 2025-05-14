@@ -79,7 +79,8 @@ function Upload() {
     setSubmitted(true);
 
     const uploadData = new FormData();
-    uploadData.append("File", files[0]);
+    uploadData.append("file", files[0]);
+    uploadData.append("method", "DETECT");
 
     try {
       // Initial request to process the document
@@ -89,19 +90,20 @@ function Upload() {
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            //"Access-Control-Allow-Origin": "*"
           },
         }
       );
 
-      const jobId = res.data.jobId; // is this the backend repsonse??
+      const jobId = res.data.jobId; // this the backend repsonse??
 
-      // Fetch the processed result
+      // Fetch the processed result : Accepts jobID, method, format
       const processedRes = await axios.get(
         "https://localhost:7103/api/Document/getProcessedDocument",
         {
           params: {
             jobId: jobId,
-            method: "DETECT",
+            method: "DETECT", //or ANALYZE
             format: "HTML", // or RAW, PRETTY 
           },
         }
@@ -111,7 +113,7 @@ function Upload() {
 
       setResponse({
         Title: extracted.title || "No Title",
-        RawText: extracted.rawText || "No extracted text available",
+        Method: extracted.method || "Unknown",
         TimeStamp: extracted.timeStamp || new Date().toLocaleString(),
         metadata: {
           size: files[0].size,
@@ -291,7 +293,7 @@ function Upload() {
               <p className="metadata"><strong>Timestamp:</strong> {response?.TimeStamp || "Not processed yet"}</p>
               <div className="extracted-text">
                 <h3>Extracted Text:</h3>
-                <p>{response?.RawText || "Waiting for extracted text..."}</p>
+                <p>{response?.Method || "Waiting for extracted text..."}</p>
               </div>
               <button type="button" onClick={handleReload} className="upload-button">
                 Upload Another Document
