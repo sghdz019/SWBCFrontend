@@ -3,7 +3,13 @@ import { useDropzone } from "react-dropzone";
 import './Upload.css';
 import cloudImg from '../cloud.png';
 import axios from "axios";
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { TextField } from '@mui/material';
+import { parse } from 'date-fns';
 
+//Purpose: Asks user for form submission and to upload a file
 function Upload() {
   const [showEmployeeInput, setShowEmployeeInput] = useState(false);
   const [showCompanyInput, setShowCompanyInput] = useState(false);
@@ -22,7 +28,7 @@ function Upload() {
   const [files, setFiles] = useState([]);
   const [response, setResponse] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [submitted, setSubmitted] = useState(false); // ✅ new state
+  const [submitted, setSubmitted] = useState(false);
 
   const employees = [
     { id: 1, name: 'John Doe (HR)' },
@@ -60,6 +66,7 @@ function Upload() {
     },
   });
 
+  //Purpose: This function handles upload submission (API)
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
@@ -69,35 +76,93 @@ function Upload() {
     }
 
     setLoading(true);
-    setSubmitted(true); // ✅ show the response container
+    setSubmitted(true);
 
-    const uploadData = new FormData();
-    uploadData.append("Title", "Gamer");
-    uploadData.append("File", files[0]);
-
+    const doc = {
+      // Build UnprocessedDocument 
+      title: formData.docTitle,
+      fileName: files[0].name,
+      companyId: formData.companyId,
+      employeeId: formData.employeeId,
+      signerName: formData.signerName,
+      signerTitle: formData.signerTitle,
+      purpose: formData.purpose,
+      signDate: formData.signDate,
+      expirationDate: formData.expirationDate,
+    };
+  
     try {
-      const res = await axios.post("https://localhost:7103/api/Document/process", uploadData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          "Access-Control-Allow-Origin": "*"
-        },
-      });
-
+      const method = "DETECT"; // or "ANALYZE"?
+  
+      const res = await axios.post(
+        `https://localhost:7103/api/Document/process?method=${method}`,
+        doc,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+  
+      const jobId = res.data;
+  
+      // Call the second endpoint with jobId
+      const format = "text"; // or "html"?
+      const processedRes = await axios.get(
+        `https://localhost:7103/api/Document/getProcessedDocument`,
+        {
+          params: {
+            jobId: jobId,
+            method: method,
+            format: format,
+          },
+        }
+      );
+  
+      //Purpose: Response back from API
       setResponse({
-        Title: res.data.title || "No Title",
+        Title: doc.title || "No Title",
         RawText: res.data.rawText || "No extracted text available",
-        TimeStamp: res.data.timeStamp || "1/1/1967 12:00:00 AM",
+        TimeStamp: new Date().toLocaleString() || "1/1/1967 12:00:00 AM",
         metadata: {
           size: files[0].size,
           type: files[0].type,
         },
       });
     } catch (error) {
-      console.error("Error submitting form:", error);
+      console.error("Error processing document:", error);
     } finally {
       setLoading(false);
     }
   };
+//This is what was there before (worked with raw text)
+  //   const uploadData = new FormData();
+  //   uploadData.append("Title", "Gamer");
+  //   uploadData.append("File", files[0]);
+
+  //   try {
+  //     const res = await axios.post("https://localhost:7103/api/Document/process", uploadData, {
+  //       headers: {
+  //         "Content-Type": "multipart/form-data",
+  //         "Access-Control-Allow-Origin": "*"
+  //       },
+  //     });
+
+  //     setResponse({
+  //       Title: res.data.title || "No Title",
+  //       RawText: res.data.rawText || "No extracted text available",
+  //       TimeStamp: res.data.timeStamp || "1/1/1967 12:00:00 AM",
+  //       metadata: {
+  //         size: files[0].size,
+  //         type: files[0].type,
+  //       },
+  //     });
+  //   } catch (error) {
+  //     console.error("Error submitting form:", error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   return (
     <div className="upload-container">
@@ -161,11 +226,41 @@ function Upload() {
           <label>Purpose:</label>
           <textarea name="purpose" value={formData.purpose} onChange={handleInputChange} required placeholder="Enter the purpose of the contract..." />
   
-          <label>Sign Date:</label>
-          <input type="date" name="signDate" value={formData.signDate} onChange={handleInputChange} required />
-  
-          <label>Expiration Date:</label>
-          <input type="date" name="expirationDate" value={formData.expirationDate} onChange={handleInputChange} required />
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DatePicker
+              label="Sign Date"
+              value={formData.signDate ? parse(formData.signDate, 'yyyy-MM-dd', new Date()) : null}
+              onChange={(newValue) => {
+                if (newValue instanceof Date && !isNaN(newValue)) {
+                  setFormData((prev) => ({
+                    ...prev,
+                    signDate: newValue.toISOString().split('T')[0], // format as yyyy-MM-dd
+                  }));
+                }
+              }}
+              renderInput={(params) => (
+                <TextField {...params} required fullWidth margin="dense" />
+              )}
+              views={['year', 'month', 'day']}
+            />
+
+            <DatePicker
+              label="Expiration Date"
+              value={formData.expirationDate ? parse(formData.expirationDate, 'yyyy-MM-dd', new Date()) : null}
+              onChange={(newValue) => {
+                if (newValue instanceof Date && !isNaN(newValue)) {
+                  setFormData((prev) => ({
+                    ...prev,
+                    expirationDate: newValue.toISOString().split('T')[0],
+                  }));
+                }
+              }}
+              renderInput={(params) => (
+                <TextField {...params} fullWidth margin="dense" />
+              )}
+              views={['year', 'month', 'day']}
+            />
+        </LocalizationProvider>
   
           {/* Dropzone Upload Section */}
           <div {...getRootProps()} className="upload-box">
