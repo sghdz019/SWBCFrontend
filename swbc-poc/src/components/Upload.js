@@ -59,11 +59,20 @@ function Upload() {
     setSubmitted(false); // reset submit state
   };
 
+  const [uploadedTitle, setUploadedTitle] = useState("");
+
   const { getRootProps, getInputProps, open } = useDropzone({
     noClick: true,
     onDrop: async (acceptedFiles) => {
       setFiles(acceptedFiles);
-    },
+
+      const fileName = acceptedFiles[0].name;
+      setUploadedTitle(fileName); // Store the file name as title
+      setFormData((prev) => ({
+        ...prev,
+        title: fileName,
+      }));
+      },
   });
 
   //Purpose: This function handles upload submission (API)
@@ -289,7 +298,7 @@ function Upload() {
             <p>Processing document...</p>
           ) : (
             <>
-              <h2 className="document-title">{response?.Title || "Pending Analysis"}</h2>
+              <h2 className="document-title">{uploadedTitle || "Untitled Document"}</h2>
               <p className="metadata"><strong>Timestamp:</strong> {response?.TimeStamp || "Not processed yet"}</p>
               <div className="extracted-text">
                 <h3>Extracted Text:</h3>
