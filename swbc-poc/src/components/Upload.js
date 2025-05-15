@@ -75,7 +75,7 @@ function Upload() {
       },
   });
 
-  //Purpose: This function handles upload submission (API)
+  //Purpose: This function handles upload submission to the API
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
@@ -89,7 +89,7 @@ function Upload() {
 
     const uploadData = new FormData();
     uploadData.append("file", files[0]);
-    uploadData.append("method", "DETECT");
+    uploadData.append("method", "ANALYZE");
 
     try {
       // Initial request to process the document
@@ -99,37 +99,69 @@ function Upload() {
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            //"Access-Control-Allow-Origin": "*"
+            "Access-Control-Allow-Origin": "*"
           },
         }
       );
 
-      const jobId = res.data.jobId; // this the backend repsonse??
+      const jobId = res.data; //Returns JobID
 
-      // Fetch the processed result : Accepts jobID, method, format
-      const processedRes = await axios.get(
-        "https://localhost:7103/api/Document/getProcessedDocument",
-        {
-          params: {
-            jobId: jobId,
-            method: "DETECT", //or ANALYZE
-            format: "HTML", // or RAW, PRETTY 
-          },
+      //Validate jobID
+      if (!jobId) {
+        alert("No job ID found. Cannot fetch results.");
+        return;
+      }
+
+      // Fetch the processed result : API accepts jobID, method, format
+      const maxAttempts = 20;
+      let attempt = 0;
+      let extracted = null;
+
+      //Poll until document is ready (max 60s)
+      while (attempt < maxAttempts){
+        try{
+          const processedRes = await axios.get(
+            "https://localhost:7103/api/Document/getProcessedDocument",
+            {
+              params: {
+                jobId: jobId,
+                method: "ANALYZE", //or DETECT
+                format: "HTML", // or RAW, PRETTY 
+              },
+            }
+          );
+          extracted = processedRes.data;  //Returns a string of text
+          break;
+        } catch (error){
+          if(axios.isAxiosError(error) && error.response?.status === 400) 
+          {
+            console.log("Document not ready yet.");
+            await new Promise((r) => setTimeout(r, 3000))//Wait 3 seconds
+            attempt++;
+          } else
+          {
+            throw error; //Unexpected error
+          }
         }
-      );
+      }
 
-      const extracted = processedRes.data;
+      if(!extracted) {
+        alert("Time out waiting for OCR processing.");
+        return;
+      }
+          
 
       setResponse({
-        Title: extracted.title || "No Title",
-        Method: extracted.method || "Unknown",
-        TimeStamp: extracted.timeStamp || new Date().toLocaleString(),
+        text: extracted,
         metadata: {
           size: files[0].size,
           type: files[0].type,
+          TimeStamp: new Date().toLocaleString(),
         },
       });
+
     } catch (error) {
+      //Handle any errors
       if (axios.isAxiosError(error)) {
         console.error("API error response status:", error.response?.status);
         console.error("API error response data:", error.response?.data);
@@ -303,10 +335,10 @@ function Upload() {
           ) : (
             <>
               <h2 className="document-title">{uploadedTitle || "Untitled Document"}</h2>
-              <p className="metadata"><strong>Timestamp:</strong> {response?.TimeStamp || "Not processed yet"}</p>
+              <p className="metadata"><strong>Submitted At::</strong> {response?.metadata.TimeStamp || "Not processed yet"}</p>
               <div className="extracted-text">
                 <h3>Extracted Text:</h3>
-                <p>{response?.Method || "Waiting for extracted text..."}</p>
+                <p>{response?.text || "Waiting for extracted text..."}</p>
               </div>
               <button type="button" onClick={handleReload} className="upload-button">
                 Upload Another Document
@@ -321,3 +353,93 @@ function Upload() {
 }
 
 export default Upload;
+
+
+
+// const handleFormSubmit = async (e) => {
+//   e.preventDefault();
+
+//   if (files.length === 0) {
+//     alert("Please upload a document before submitting.");
+//     return;
+//   }
+
+//   setLoading(true);
+//   setSubmitted(true);
+
+//   try {
+//     const form = new FormData();
+//     form.append("file", files[0]);
+//     form.append("method", "DETECT");        // or "ANALYZE"
+
+//     const processRes = await axios.post(
+//       "https://localhost:7103/api/Document/process",
+//       form,
+//       { headers: { "Content-Type": "multipart/form-data" } }
+//     );
+
+//     const jobId = typeof processRes.data === "string"
+//       ? processRes.data        // server just returned the Id
+//       : processRes.data.jobId; // fallback if your controller someday wraps it
+
+//     const MAX_ATTEMPTS = 30;   // 30 × 2 s  ≈ 1 min
+//     const DELAY_MS     = 2000;
+
+//     let extracted = null;
+//     for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+//       try {
+//         const pollRes = await axios.get(
+//           "https://localhost:7103/api/Document/getProcessedDocument",
+//           {
+//             params: {
+//               jobId,
+//               method: "DETECT",    // or "ANALYZE" (match what you sent above)
+//               format: "HTML",      // "RAW" | "PRETTY" | "HTML"
+//             },
+//             timeout: DELAY_MS + 1000,
+//           }
+//         );
+
+//         extracted = pollRes.data; 
+//         break;
+//       } catch (err) {  
+//         if (
+//           axios.isAxiosError(err) &&
+//           err.response &&
+//           (err.response.status === 400 || err.response.status === 404)
+//         ) {
+//           await sleep(DELAY_MS);                // wait then next attempt
+//           continue;
+//         }
+//         throw err; 
+//       }
+//     }
+
+//     if (extracted === null) {
+//       throw new Error("Timed out waiting for the document to finish processing.");
+//     }
+
+//     setResponse({
+//       text: extracted,          // plain string (HTML / RAW / PRETTY)
+//       metadata: {
+//         size: files[0].size,
+//         type: files[0].type,
+//       },
+//     });
+//   } catch (error) {
+//     if (axios.isAxiosError(error)) {
+//       console.error("API error:", error.response?.status, error.response?.data);
+//       alert(
+//         `API Error: ${
+//           error.response?.data?.message ||
+//           `status ${error.response?.status}`
+//         }`
+//       );
+//     } else {
+//       console.error("Unexpected error:", error);
+//       alert(error.message || "Unexpected error occurred.");
+//     }
+//   } finally {
+//     setLoading(false);
+//   }
+// };
