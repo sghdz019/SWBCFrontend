@@ -86,12 +86,11 @@ function Upload() {
 
     setLoading(true);
     setSubmitted(true);
-
-    const uploadData = new FormData();
-    uploadData.append("file", files[0]);
-    uploadData.append("method", "ANALYZE");
-
     try {
+      const uploadData = new FormData();
+      uploadData.append("file", files[0]);
+      uploadData.append("method", "ANALYZE");
+
       // Initial request to process the document
       const res = await axios.post(
         "https://localhost:7103/api/Document/process",
@@ -159,6 +158,8 @@ function Upload() {
           TimeStamp: new Date().toLocaleString(),
         },
       });
+
+      setLoading(false);
 
     } catch (error) {
       //Handle any errors
