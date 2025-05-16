@@ -125,7 +125,7 @@ function Upload() {
               params: {
                 jobId: jobId,
                 method: "ANALYZE", //or DETECT
-                format: "HTML", // or RAW, PRETTY 
+                format: "PRETTY", // or RAW, HTML 
               },
             }
           );
